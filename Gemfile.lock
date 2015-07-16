@@ -47,5 +47,6 @@ DEPENDENCIES
   better_errors
   httparty
   pry
+  rack
   sinatra
   sinatra-reloader
