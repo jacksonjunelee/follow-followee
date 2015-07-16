@@ -1,2 +1,2 @@
-require 'follow_followee'
+require './follow_followee'
 run Sinatra::Application
