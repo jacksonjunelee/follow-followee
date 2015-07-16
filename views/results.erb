@@ -1,0 +1,25 @@
+<% if @flash  %>
+  <h2><%= @flash%></h2>
+<% end %><hr>
+
+<table>
+  <tr>
+    <th>Count</th>
+    <th>USERNAME</th>
+    <th>FULL NAME</th>
+    <th>PROFILE PICTURE</th>
+  </tr>
+
+<% @data.each_with_index do |person, index| %>
+  <tr>
+    <th><%= index + 1 %></th>
+    <th><%= person["username"] %></th>
+    <th> <%= person["full_name"] %></th>
+    <th><img src="<%= person['profile_picture']%>"></th>
+    <th>
+        <a href="/follow_search/<%= person["id"] %>?username=<%= person["username"] %>">Get a List this User follows</a><br>
+        <a href="/follow_by_search/<%= person["id"] %>?username=<%= person["username"] %>">Get a list of users this User is followed by</a>
+    </a>
+  </tr>
+<% end %>
+</table>
