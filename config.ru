@@ -1,5 +1,2 @@
-$:.unshift File.expand_path("../", __FILE__)
-require 'rubygems'
-require 'sinatra'
-require './web'
+require './follow_followee'
 run Sinatra::Application
