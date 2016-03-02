@@ -30,6 +30,17 @@ end
 get '/follow_search/:id' do
   @flash = "Followers Of #{params[:username]}" if params[:username]
   response = HTTParty.get("https://api.instagram.com/v1/users/#{params[:id]}/follows?client_id=f2a780c71c044f519ba176c8b60d0ce8")
+  response["data"].map do |person|
+     follow_follow = HTTParty.get("https://api.instagram.com/v1/users/#{person["id"]}?client_id=f2a780c71c044f519ba176c8b60d0ce8")
+     binding.pry
+     if follow_follow["meta"]["error_type"]
+       person["followers"] = "X"
+       person["followed_by"] = "X"
+     else
+       person["followers"] = follow_follow["data"]["counts"]["follows"]
+       person["followed_by"] = follow_follow["data"]["counts"]["followed_by"]
+     end
+  end unless response["meta"]["error_type"]
   if response["meta"]["error_type"]
     erb :'error_404'
   else
@@ -41,6 +52,16 @@ end
 get '/follow_by_search/:id' do
   @flash = "Users Followed By #{params[:username]}" if params[:username]
   response = HTTParty.get("https://api.instagram.com/v1/users/#{params[:id]}/followed-by?client_id=f2a780c71c044f519ba176c8b60d0ce8")
+  response["data"].map do |person|
+     follow_follow = HTTParty.get("https://api.instagram.com/v1/users/#{person["id"]}?client_id=f2a780c71c044f519ba176c8b60d0ce8")
+     if follow_follow["meta"]["error_type"]
+       person["followers"] = "X"
+       person["followed_by"] = "X"
+     else
+       person["followers"] = follow_follow["data"]["counts"]["follows"]
+       person["followed_by"] = follow_follow["data"]["counts"]["followed_by"]
+     end
+  end unless response["meta"]["error_type"]
   if response["meta"]["error_type"]
     erb :'error_404'
   else
